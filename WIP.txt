@@ -1,0 +1,48 @@
+### https://github.com/snowplow/snowplow-tco-model/blob/master/R/database-costs.r
+
+
+
+
+### https://github.com/twitter/AnomalyDetection
+
+devtools::install_github("twitter/AnomalyDetection")
+library(AnomalyDetection)
+
+data(raw_data)
+res = AnomalyDetectionTs(raw_data, max_anoms=0.02, direction='both', plot=TRUE)
+res$plot
+
+
+
+
+### http://google.github.io/CausalImpact/CausalImpact.html
+library(devtools)
+devtools::install_github("google/CausalImpact")
+library(CausalImpact)
+
+library("ggplot2")
+nbItems <- 100
+x1 <- 100 + arima.sim(model = list(ar = 0.999), n = nbItems)
+
+eventStart <- nbItems * 0.75
+boost <- rnorm(n = nbItems - eventStart + 1, mean = 6, sd = 0.01)
+y <- 1.2 * x1 + rnorm(nbItems)
+y[eventStart:nbItems] <- y[eventStart:nbItems] + boost
+
+# df <- data.frame(x1 = x1, y = y)
+# ggplot(df, aes(x = seq(1, length(df$x1)))) +
+#   scale_x_continuous() + scale_y_continuous() +
+#   geom_line(aes(y = x1), color = "blue") +
+#   geom_line(aes(y = y), color = "red") +
+#   geom_vline(xintercept = eventStart, size = 0.2, linetype = "longdash")
+
+
+
+pre.period <- c(1, eventStart - 1)
+post.period <- c(eventStart, 100)
+data <- cbind(y, x1)
+impact <- CausalImpact(data, pre.period, post.period)
+
+plot(impact)
+summary(impact, "report")
+
