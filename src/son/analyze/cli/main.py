@@ -1,6 +1,7 @@
 """son-analyze command line tool"""
 
 import sys
+import os
 import signal
 from argparse import ArgumentParser, Namespace
 from pkg_resources import resource_filename  # type: ignore
@@ -9,15 +10,16 @@ from typing import List
 from docker import Client  # type: ignore
 from son.analyze import __version__
 
-_IMAGE_TAG = 'son-analyze'
+_IMAGE_TAG = 'son-analyze-scikit'
 
 
 def bootstrap(_: Namespace) -> None:
     """Create the images used by son-analyze in the current host"""
     cli = Client(base_url='unix://var/run/docker.sock')
-    path = resource_filename('son.analyze.resources', 'r')
-    for line in cli.build(path=path, tag=_IMAGE_TAG,
-                          dockerfile='Dockerfile', rm=True, decode=True):
+    path = resource_filename('son.analyze.resources', 'anaconda.Dockerfile')
+    root_context = os.path.realpath(resource_filename('son.analyze', '../../..'))
+    for line in cli.build(path=root_context, tag=_IMAGE_TAG,
+                          dockerfile=path, rm=True, decode=True):
         print('> ', line["stream"], end="")
     sys.exit(0)
 

@@ -5,4 +5,9 @@ outputs/_output_*
 .tox
 __pycache__
 venv
+venv3
 devenv
+*.pyc
+.git
+dist
+build
