@@ -1,0 +1,87 @@
+# YAML record of a iperf docker container
+# used in the SONATA platform
+
+---
+##
+## Some general information regarding this
+## VNF record.
+##
+descriptor_version: "vnfr-schema-01"
+id: "0896785c-4d6e-4b7f-acff-44f3b927fa86"
+# vendor: "eu.sonata-nfv"
+# name: "iperf-vnf"
+version: "0.2"
+# author: "Steven van Rossem, iMinds"
+# description: >
+#   "A first iperf VNF descriptor. The iperf VNF
+#    acts as a traffic source."
+status: "normal operation"
+descriptor_reference: "d0ac3202-3f1c-412d-b7a8-6d9d0034ec45"
+# deployment_favour: null # TODO
+parent_ns: "0295d535-208e-4a5d-abc6-ca0e06b44d8e"
+
+
+##
+## The virtual deployment unit.
+##
+virtual_deployment_units:
+  - id: "vdu01"
+    vm_image: "file:///docker_files/iperf/Dockerfile"
+    vdu_reference: "TODO"
+    number_of_instances: 1
+    vnfc_instance: # TODO
+      - id: "93d0872e-89b6-4b2a-939b-c4609d16ab06"
+        vim_id: "TODO"
+        vc_id: "TOTO"
+        connection_points: [] # TODO
+    resource_requirements:
+      cpu:
+        vcpus: 1
+      memory:
+        size: 2
+        size_unit: "GB"
+      storage:
+        size: 10
+        size_unit: "GB"
+
+##
+## The virtual links that interconnect
+## the different connections points.
+##
+virtual_links:
+  - id: "mgmt"
+    connectivity_type: "E-LAN"
+    connection_points_reference:
+      - "vdu01:cp01"
+      - "mgmt"
+  - id: "input"
+    connectivity_type: "E-Line"
+    connection_points_reference:
+      - "vdu01:cp02"
+      - "input"
+  - id: "output"
+    connectivity_type: "E-Line"
+    connection_points_reference:
+      - "vdu01:cp03"
+      - "output"
+
+##
+## The VNF connection points to the 
+## outside world.
+##
+connection_points:
+  - id: "mgmt"
+    type:
+      address: "2.0.0.1"
+  - id: "input"
+    type:
+      address: "2.0.0.2"
+  - id: "output"
+    type:
+      address: "2.0.0.3"
+
+vnf_address:
+  address: # TODO, in double with connection_points ?x
+    - "2.0.0.1"
+    - "2.0.0.2"
+    - "2.0.0.3"

@@ -1,0 +1,110 @@
+##
+## This is the network service descriptor of the
+## SONATA demo example that comprises a traffic
+## source, namely iperf, a firewall, and a traffic
+## sink, namely tcpdump.
+##
+---
+descriptor_version: "1.0"
+id: "0295d535-208e-4a5d-abc6-ca0e06b44d8e"
+version: "0.2.1"
+status: "normal operation"
+descriptor_reference: "91460c67-d046-400b-bc34-aadb6514cbfb"
+# vendor: "eu.sonata-nfv.service-descriptor"
+# name: "sonata-demo"
+# author: "Michael Bredel, NEC Labs Europe"
+# description: >
+#   "The network service record for the SONATA demo,
+#    comprising iperf, a firewall, and tcpump."
+
+##
+## The various network functions this service
+## is composed of.
+##
+network_functions:
+  - vnfr_id: "9b4663bc-d7af-40bf-8efe-3dc069b2349f"
+  - vnfr_id: "0896785c-4d6e-4b7f-acff-44f3b927fa86"
+  - vnfr_id: "6b64cc54-83a7-4172-9f5f-98b93c5c3a4e"
+
+##
+## The NS connection points to the 
+## outside world.
+##
+connection_points:
+  - id: "ns:mgmt"
+    type: "interface"
+  - id: "ns:input"
+    type: "interface"
+  - id: "ns:output"
+    type: "interface"
+
+##
+## The virtual links that interconnect
+## the different connections points.
+##
+virtual_links:
+  - id: "mgmt"
+    connectivity_type: "E-LAN"
+    connection_points_reference:
+      - "0896785c-4d6e-4b7f-acff-44f3b927fa86:mgmt"
+      - "9b4663bc-d7af-40bf-8efe-3dc069b2349f:mgmt"
+      - "6b64cc54-83a7-4172-9f5f-98b93c5c3a4e:mgmt"
+      - "ns:mgmt"
+  - id: "input-2-iperf"
+    connectivity_type: "E-Line"
+    connection_points_reference:
+      - "ns:input"
+      - "0896785c-4d6e-4b7f-acff-44f3b927fa86:input"
+  - id: "iperf-2-firewall"
+    connectivity_type: "E-Line"
+    connection_points_reference:
+      - "0896785c-4d6e-4b7f-acff-44f3b927fa86:output"
+      - "9b4663bc-d7af-40bf-8efe-3dc069b2349f:input"
+  - id: "firewall-2-tcpdump"
+    connectivity_type: "E-Line"
+    connection_points_reference:
+      - "9b4663bc-d7af-40bf-8efe-3dc069b2349f:output"
+      - "6b64cc54-83a7-4172-9f5f-98b93c5c3a4e:input"
+  - id: "tcpdump-2-output"
+    connectivity_type: "E-Line"
+    connection_points_reference:
+      - "6b64cc54-83a7-4172-9f5f-98b93c5c3a4e:output"
+      - "ns:output"
+
+##
+## The forwarding graphs.
+##
+forwarding_graphs:
+  - fg_id: "ns:fg01"
+    number_of_endpoints: 2
+    number_of_virtual_links: 4
+    depedent_virtual_links: 
+      - "mgmt"
+      - "input-2-iperf"
+      - "iperf-2-firewall"
+      - "firewall-2-tcpdump"
+      - "tcpdump-2-output"
+    constituent_vnfs:
+      - "0896785c-4d6e-4b7f-acff-44f3b927fa86"
+      - "9b4663bc-d7af-40bf-8efe-3dc069b2349f"
+      - "6b64cc54-83a7-4172-9f5f-98b93c5c3a4e"
+    network_forwarding_paths:
+      - fp_id: "ns:fg01:fp01"
+        policy: "none"
+        connection_points:
+          - connection_point_ref: "ns:input"
+            position: 1
+          - connection_point_ref: "0896785c-4d6e-4b7f-acff-44f3b927fa86:input"
+            position: 2
+          - connection_point_ref: "0896785c-4d6e-4b7f-acff-44f3b927fa86:output"
+            position: 3
+          - connection_point_ref: "9b4663bc-d7af-40bf-8efe-3dc069b2349f:input"
+            position: 4
+          - connection_point_ref: "9b4663bc-d7af-40bf-8efe-3dc069b2349f:output"
+            position: 5
+          - connection_point_ref: "6b64cc54-83a7-4172-9f5f-98b93c5c3a4e:input"
+            position: 6
+          - connection_point_ref: "6b64cc54-83a7-4172-9f5f-98b93c5c3a4e:output"
+            position: 7
+          - connection_point_ref: "ns:output"
+            position: 8

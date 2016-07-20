@@ -1,0 +1,100 @@
+# YAML record of a firewall docker container
+# used in the SONATA platform
+
+---
+##
+## Some general information regarding this
+## VNF record.
+##
+descriptor_version: "vnfr-schema-01"
+id: "9b4663bc-d7af-40bf-8efe-3dc069b2349f"
+# vendor: "eu.sonata-nfv"
+# name: "firewall-vnf"
+version: "0.3"
+# author: "Steven van Rossem, iMinds"
+# description: >
+#   "A first firewall VNF descriptor"
+status: "normal operation"
+descriptor_reference: "dce50374-c4e2-4902-b6e4-cd23b72e8f19"
+# deployment_favour: null # TODO
+parent_ns: "0295d535-208e-4a5d-abc6-ca0e06b44d8e"
+
+
+##
+## The virtual deployment unit.
+##
+virtual_deployment_units:
+  - id: "vdu01"
+    vm_image: "http://registry.sonata-nfv.eu/html/files/VM_images/sonata-VM-2ports.qcow"
+    vdu_reference: "TODO"
+    number_of_instances: 1
+    vnfc_instance: # TODO
+      - id: "d0c20c7e-7d80-4356-a8cb-b85ed8b88575"
+        vim_id: "TODO"
+        vc_id: "TOTO"
+        connection_points: [] # TODO
+    resource_requirements:
+      cpu:
+        vcpus: 1
+      memory:
+        size: 2
+        size_unit: "GB"
+      storage:
+        size: 10
+        size_unit: "GB"
+    monitoring_parameters:
+      - name: "vm_cpu_perc"
+        unit: "Percentage"
+      - name: "vm_mem_pers"
+        unit: "Percentage"
+      - name: "vm_net_rx_MB"
+        unit: "MB"
+      - name: "vm_net_tx_MB"
+        unit: "Mbps"
+
+
+##
+## The virtual links that interconnect
+## the different connections points.
+##
+virtual_links:
+  - id: "mgmt"
+    connectivity_type: "E-LAN"
+    connection_points_reference:
+      - "vdu01:eth0"
+      - "mgmt"
+    dhcp: True
+  - id: "input"
+    connectivity_type: "E-Line"
+    connection_points_reference:
+      - "vdu01:eth1"
+      - "input"
+    dhcp: True
+  - id: "output"
+    connectivity_type: "E-Line"
+    connection_points_reference:
+      - "vdu01:eth2"
+      - "output"
+    dhcp: True
+
+##
+## The VNF connection points to the 
+## outside world.
+##
+connection_points:
+  - id: "mgmt"
+    type:
+      address: "1.0.0.1"
+  - id: "input"
+    type:
+      address: "1.0.0.2"
+  - id: "output"
+    type:
+      address: "1.0.0.3"
+
+vnf_address:
+  address: # TODO, in double with connection_points
+    - "1.0.0.1"
+    - "1.0.0.2"
+    - "1.0.0.3"
+  
