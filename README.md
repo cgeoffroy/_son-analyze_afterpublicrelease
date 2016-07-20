@@ -54,6 +54,7 @@ With Docker, the CI tests can be locally run with:
   * [docker-py](https://pypi.python.org/pypi/docker-py) >=1.7.2 (Apache License Version 2.0)
   * [pyaml](https://pypi.python.org/pypi/pyaml) >=15.8.2 (WTFPL)
   * [typing](https://pypi.python.org/pypi/typing) >=3.5.0.1 (PSF)
+  * [requests](https://pypi.python.org/pypi/requests) >=2.9.1 (Apache License Version 2.0)
 * `son-scikit` (at runtime)
   * [`son-analyze`](https://github.com/sonata-nfv/son-analyze) >= 0.0.1 (Apache License Version 2.0)
   * [pyaml](https://pypi.python.org/pypi/pyaml) >=15.8.2 (WTFPL)
@@ -61,13 +62,15 @@ With Docker, the CI tests can be locally run with:
   * [pandas](https://pypi.python.org/pypi/pandas) >=0.18.1 (BSD)
   * [Jupyter](http://jupyter.org/about.html) >=4.0 (BSD)
 * During development and testing
-  * [requests](https://pypi.python.org/pypi/requests) >=2.9.1 (Apache License Version 2.0)
   * [colorama](https://pypi.python.org/pypi/colorama) >=0.3.7 (BSD)
   * [pip-tools](https://pypi.python.org/pypi/pip-tools) >=1.6 (BSD)
   * [pytest](https://pypi.python.org/pypi/pytest) >=2.9.0 (MIT)
   * [flake8](https://pypi.python.org/pypi/flake8) >=2.5.4 (MIT)
   * [mypy-lang](https://pypi.python.org/pypi/mypy-lang) >=0.3.1 (MIT)
   * [pylint](https://pypi.python.org/pypi/pylint) >=1.5.4 (GPL): Pylint is used to check the source code for programming errors. It is done by calling the main `pylint` executable over this repository's files. No feature is built upon this tool. This dependency doesn't create a derivative work therefore it doesn't trigger the copyleft effect.
+  * [requests_mock](https://pypi.python.org/pypi/requests-mock) >= 1.0.0 (Apache License Version 2.0)
+  * [pytest-capturelog](https://pypi.python.org/pypi/pytest-capturelog) >= 0.7 (MIT)
+
 
 ### Contributing
 

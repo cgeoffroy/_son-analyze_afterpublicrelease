@@ -68,6 +68,7 @@ setup(
         'pyaml >= 15.8.0, < 16.0.0',
         'typing >= 3.5.0.1',
         'docker-py >= 1.7.0',
+        'requests >= 2.9.1',
     ],
     zip_safe=False,
     entry_points={
