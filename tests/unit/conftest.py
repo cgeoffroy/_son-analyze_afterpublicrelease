@@ -55,3 +55,27 @@ def empty_result() -> str:
 @pytest.fixture
 def error_result() -> str:
     return _read_static_fixtures_file('error_result.json')
+
+
+@pytest.fixture
+def sonata_demo_nsd_91460c67() -> str:
+    return _read_static_fixtures_file('sonata-demo-nsd.91460c67-d046'
+                                      '-400b-bc34-aadb6514cbfb.yml')
+
+
+@pytest.fixture
+def iperf_vnfd_d0ac3202() -> str:
+    return _read_static_fixtures_file('iperf-vnfd.d0ac3202-3f1c'
+                                      '-412d-b7a8-6d9d0034ec45.yml')
+
+
+@pytest.fixture
+def firewall_vnfd_dce50374() -> str:
+    return _read_static_fixtures_file('firewall-vnfd.dce50374-c4e2'
+                                      '-4902-b6e4-cd23b72e8f19.yml')
+
+
+@pytest.fixture
+def tcpdump_vnfd_18741f2a() -> str:
+    return _read_static_fixtures_file('tcpdump-vnfd.18741f2a-a8d5'
+                                      '-4de2-a3bf-3608bd30d281.yml')
