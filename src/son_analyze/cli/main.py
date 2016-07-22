@@ -145,7 +145,7 @@ def resource_target(raw_target):
         raise ArgumentTypeError("Target must have the form: <name>,<version>")
 
 
-def url_type(raw_url):
+def url_type(raw_url: str) -> urllib.parse.ParseResult:
     """Define the type of a URL"""
     url = urllib.parse.urlparse(raw_url, scheme='http')
     isvalid = all(getattr(url, attr) for attr in ['scheme', 'netloc'])
