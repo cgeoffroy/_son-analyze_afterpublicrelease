@@ -31,7 +31,6 @@ import sys
 import os
 import logging
 import signal
-import collections
 import urllib.parse
 from argparse import ArgumentParser, Namespace, ArgumentTypeError
 from pkg_resources import resource_filename  # type: ignore
@@ -39,6 +38,7 @@ import typing  # noqa pylint: disable=unused-import
 from typing import List
 from docker import Client  # type: ignore
 from son_analyze import __version__
+from son_analyze.core import types
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -132,17 +132,15 @@ def dummy(_: Namespace) -> None:
     sys.exit(1)
 
 
-_ResourceTargetTuple = collections.namedtuple('ResourceTargetTuple',
-                                              ['name', 'version'])
-
-
-def resource_target(raw_target):
+def resource_target(raw_target: str) -> types.ResourceTargetTuple:
     """Define the type of resource"""
     try:
-        rname, rversion = raw_target.split(',')
-        return _ResourceTargetTuple(name=rname, version=rversion)
+        rvendor, rname, rversion = raw_target.split(',')
+        return types.ResourceTargetTuple(vendor=rvendor, name=rname,
+                                         version=rversion)
     except:
-        raise ArgumentTypeError("Target must have the form: <name>,<version>")
+        raise ArgumentTypeError("Target must have the form: "
+                                "<vendor>,<name>,<version>")
 
 
 def url_type(raw_url: str) -> urllib.parse.ParseResult:
