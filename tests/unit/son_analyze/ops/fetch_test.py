@@ -30,28 +30,17 @@ import logging
 import urllib.parse
 import typing  # noqa pylint: disable=unused-import
 import requests_mock  # type: ignore
-import yaml  # type: ignore
 from son_analyze.ops import fetch
 
 
-def test_fetch_nsd(caplog, sonata_demo_nsd_91460c67, iperf_vnfd_d0ac3202,
-                   firewall_vnfd_dce50374, tcpdump_vnfd_18741f2a) -> None:
+def test_fetch_nsd(caplog, sonata_demo_mock) -> None:
     caplog.setLevel(logging.DEBUG)
     with requests_mock.Mocker() as mocker:
-        files = [
-            ('services', yaml.load(sonata_demo_nsd_91460c67)),
-            ('functions', yaml.load(iperf_vnfd_d0ac3202)),
-            ('functions', yaml.load(firewall_vnfd_dce50374)),
-            ('functions', yaml.load(tcpdump_vnfd_18741f2a))
-        ]
-        for to_mock in files:
-            base = ('http://localhost/mock/{:s}?name={:s}&'
-                    'vendor={:s}&version={:s}').format(
-                        to_mock[0], to_mock[1]['name'],
-                        to_mock[1]['vendor'], to_mock[1]['version'])
-            url = urllib.parse.urlparse(base)
-            mocker.get(url.geturl(), json=[to_mock[1]])
-        (nsd, vnfds) = fetch.fetch_nsd(url, 'eu.sonata-nfv.service-descriptor',
+        for (url, value) in sonata_demo_mock:
+            mocker.get(url.geturl(), json=value)
+        gate = urllib.parse.urlparse('http://localhost/mock/')
+        (nsd, vnfds) = fetch.fetch_nsd(gate,
+                                       'eu.sonata-nfv.service-descriptor',
                                        'sonata-demo', '0.2.1')
     assert nsd['descriptor_version'] == '1.0'
     assert len(vnfds) == 3
