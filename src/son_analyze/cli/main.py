@@ -38,6 +38,7 @@ import typing  # noqa pylint: disable=unused-import
 from typing import List
 from docker import Client  # type: ignore
 from son_analyze import __version__
+from son_analyze.cli import fetch_cmd
 from son_analyze.core import types
 
 
@@ -153,8 +154,9 @@ def url_type(raw_url: str) -> urllib.parse.ParseResult:
         raise ArgumentTypeError("Url is not valid")
 
 
-def fetch(_: Namespace) -> None:
+def fetch_func(args: Namespace) -> None:
     """Fetch data"""
+    fetch_cmd.fetch_cmd(args.endpoint, args.kind, args.target)
     sys.exit(0)
 
 
@@ -197,9 +199,12 @@ def dispatch(raw_args: List) -> None:
     parser_fetch.add_argument('--endpoint', action='store', help=help_msg,
                               metavar='URL', type=url_type,
                               default=default_val)
+    parser_fetch.add_argument('kind', nargs=1, help="The resource's type",
+                              type=str, choices=['nsd', 'vnfd'])
     parser_fetch.add_argument('target', nargs=1, type=resource_target,
-                              help='A resource specified by: <name>,<version>')
-    parser_fetch = parser_fetch.set_defaults(func=fetch)
+                              help=('A resource specified by: '
+                                    '<vendor>,<name>,<version>'))
+    parser_fetch = parser_fetch.set_defaults(func=fetch_func)
 
     parser_dummy = subparsers.add_parser('dummy', help='Do something dummy')
     parser_dummy.set_defaults(func=dummy)
